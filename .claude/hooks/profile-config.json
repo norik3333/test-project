@@ -1,0 +1,47 @@
+{
+  "profiles": {
+    "minimal": {
+      "description": "Prototyping/learning - observe only, HARD-GATE ①② のみ",
+      "hard_gates": ["①", "②"],
+      "hooks": {
+        "quality-gate": false,
+        "observe": true,
+        "session-start": false,
+        "session-end": false,
+        "security-scan": false,
+        "cost-tracker": false,
+        "auto-format": false,
+        "validate-typescript": false
+      }
+    },
+    "standard": {
+      "description": "Normal development - all 6 HARD-GATEs, quality + observe + session hooks",
+      "hard_gates": ["①", "②", "③", "④", "⑤", "⑥"],
+      "hooks": {
+        "quality-gate": true,
+        "observe": true,
+        "session-start": true,
+        "session-end": true,
+        "security-scan": false,
+        "cost-tracker": true,
+        "auto-format": true,
+        "validate-typescript": true
+      }
+    },
+    "strict": {
+      "description": "Pre-release - all HARD-GATEs + security mandatory, all hooks enabled",
+      "hard_gates": ["①", "②", "③", "④", "⑤", "⑥"],
+      "hooks": {
+        "quality-gate": true,
+        "observe": true,
+        "session-start": true,
+        "session-end": true,
+        "security-scan": true,
+        "cost-tracker": true,
+        "auto-format": true,
+        "validate-typescript": true
+      }
+    }
+  },
+  "default_profile": "standard"
+}

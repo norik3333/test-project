@@ -1,0 +1,114 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/auto-answer-question.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/save-state-snapshot.sh",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/continuation-enforcement.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "if": "Edit(**.ts) || Edit(**.tsx)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/quality-gate.sh Edit \"$CLAUDE_FILE_PATH\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "if": "Write(**.ts) || Write(**.tsx)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/quality-gate.sh Write \"$CLAUDE_FILE_PATH\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/post-tool-verifier.sh"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-compact-handler.sh"
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/post-compact-handler.sh"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/subagent-verify.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/subagent-observatory.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/keyword-skill-detect.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
